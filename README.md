@@ -24,6 +24,7 @@ Create a folder in your name (Note: Give folder name without any space) and Crea
 
 ## Creating Source Codes 
 
+
 In the Terminal, type gedit <filename>.v (ex: gedit alu_32bit.v). 
 
 A Blank Document opens up into which the following source code can be typed down. 
@@ -33,7 +34,25 @@ A Blank Document opens up into which the following source code can be typed down
 ## a)To Verify the Functionality using Test Bench
 
 ## Source Code – Using Case Statement :
-
+module alu_32bit_case(y,a,b,f);
+input [31:0]a;
+input [31:0]b;
+input [2:0]f;
+output reg [31:0]y;
+always@(*)
+begin
+case(f)
+3'b000:y=a&b; //AND Operation
+3'b001:y=a|b; //OR Operation
+3'b010:y=~(a&b); //NAND Operation
+3'b011:y=~(a|b); //NOR Operation
+3'b010:y=a+b; //Addition
+3'b011:y=a-b; //Subtraction
+3'b100:y=a*b; //Multiply
+default:y=32'bx;
+endcase
+end
+endmodule
 (Include program here)
 
 Use Save option or Ctrl+S to save the code or click on the save option from the top most right corner and close the text file.
@@ -43,6 +62,24 @@ Use Save option or Ctrl+S to save the code or click on the save option from the 
 Similarly, create your test bench using gedit <filename_tb>.v or <filename_tb>.vhdl to open a new blank document (alu_32bit_tb_case).
 
 ## Test Bench :
+module alu_32bit_tb_case;
+reg [31:0]a;
+reg [31:0]b;
+reg [2:0]f;
+wire [31:0]y;
+alu_32bit_case test2(.y(y),.a(a),.b(b),.f(f));
+initial
+begin
+a=32'h00000000;
+b=32'hFFFFFFFF;
+#10 f=3'b000;
+#10 f=3'b001;
+#10 f=3'b010;
+#10 f=3'b100;
+end
+initial
+#50 $finish;
+endmodule
 
 (Include test bench program here)
 
@@ -59,6 +96,7 @@ source /cadence/install/cshrc (mention the path of the tools)
 (The path of cshrc could vary depending on the installation destination)
       
 After this you can see the window like below 
+![Screenshot (167)](https://github.com/user-attachments/assets/84649cfc-59a4-4251-a306-b0403ad8d7a7)
 
 ### Fig 2: Invoke the Cadence Environment
 
@@ -72,12 +110,14 @@ or
 
 
 It will invoke the nclaunch window for functional simulation we can compile,elaborate and simulate it using Multiple Step .
+![Screenshot (167)](https://github.com/user-attachments/assets/61e209be-c37c-406b-bb80-fac582693abc)
 
 ### Fig 3: Setting Multi-step simulation
 
 Select Multiple Step and then select “Create cds.lib File” as shown in below figure 
 
 Click the cds.lib file and save the file by clicking on Save option 
+![Screenshot (161)](https://github.com/user-attachments/assets/a0b13083-f036-4276-ac63-c602fad8f8cb)
 
 ### Fig 4:cds.lib file Creation
 
@@ -100,6 +140,7 @@ Left side you can see the HDL files. Right side of the window has worklib and sn
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation .
 
 To perform the function simulation, the following three steps are involved Compilation, Elaboration and Simulation. 
+![Screenshot (163)](https://github.com/user-attachments/assets/28c3b995-4ca2-4074-9f66-d9d40534cdd6)
 
 ### Fig 6: Nclaunch Window
 
@@ -124,6 +165,7 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 Left side select the file and in Tools : launch verilog compiler with current selection will get enable. Click it to compile the code 
 
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation 
+![Screenshot (162)](https://github.com/user-attachments/assets/4e915cb0-7e47-4ca6-8795-5209fa18b434)
 
 ### Fig 7: Compiled database in worklib
 
@@ -172,8 +214,12 @@ Outputs: Simulation log file, waveforms for debugging
 Simulation allow to dump design and test bench signals into a waveform 
 
 Steps for simulation – Run the simulation command with simulator options
+![Screenshot (164)](https://github.com/user-attachments/assets/23972637-b648-4122-9db3-12a57a38ea76)
 
 ## Fig 9: Design Browser window for simulation
+
+
+![Screenshot (165)](https://github.com/user-attachments/assets/833d3cc5-8733-489c-a3f0-0422b68150da)
 
 ## Fig 10:Simulation Waveform Window
 
